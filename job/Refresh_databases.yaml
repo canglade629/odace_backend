@@ -1,0 +1,71 @@
+resources:
+ jobs:
+   Refresh_databases:
+     name: Refresh all databases
+     email_notifications:
+       on_start:
+         - hnana.salma@gmail.com
+       on_success:
+         - hnana.salma@gmail.com
+       on_failure:
+         - hnana.salma@gmail.com
+     notification_settings:
+       no_alert_for_skipped_runs: true
+       no_alert_for_canceled_runs: true
+     tasks:
+       - task_key: Reset_Catalog
+         notebook_task:
+           notebook_path: config/reset_catalog
+           source: GIT
+       - task_key: Setup_Catalog
+         depends_on:
+           - task_key: Reset_Catalog
+         notebook_task:
+           notebook_path: config/setup_catalog
+           source: GIT
+       - task_key: bronze_logement
+         depends_on:
+           - task_key: Setup_Catalog
+         notebook_task:
+           notebook_path: sources/bronze/odace_backend/bronze_logement
+           source: GIT
+       - task_key: bronze_transport
+         depends_on:
+           - task_key: Setup_Catalog
+         notebook_task:
+           notebook_path: sources/bronze/odace_backend/bronze_transport
+           source: GIT
+       - task_key: Bronze_geo
+         depends_on:
+           - task_key: Setup_Catalog
+         notebook_task:
+           notebook_path: sources/bronze/bronze_geo
+           source: GIT
+       - task_key: silver_gares
+         depends_on:
+           - task_key: bronze_transport
+         notebook_task:
+           notebook_path: sources/bronze/odace_backend/silver_gares
+           source: GIT
+       - task_key: silver_lignes
+         depends_on:
+           - task_key: bronze_transport
+         notebook_task:
+           notebook_path: sources/bronze/odace_backend/silver_lignes
+           source: GIT
+       - task_key: silver_logement
+         depends_on:
+           - task_key: bronze_logement
+         notebook_task:
+           notebook_path: sources/bronze/odace_backend/silver_logement
+           source: GIT
+     git_source:
+       git_url: https://github.com/canglade629/odace_backend
+       git_provider: gitHub
+       git_branch: main
+     queue:
+       enabled: true
+     performance_target: PERFORMANCE_OPTIMIZED
+
+
+

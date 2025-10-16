@@ -1,0 +1,21 @@
+category_to_dir:
+  logement: /Volumes/jaccueille/bronze/source_files/logement/loyer/
+  gares: /Volumes/jaccueille/bronze/source_files/transport/train/gares/
+  lignes: /Volumes/jaccueille/bronze/source_files/transport/train/lignes/
+  geo: /Volumes/jaccueille/bronze/source_files/geo/communes/
+source_files:
+  - file_name: ZE2020_au_01-01-2025.xlsx
+    gdrive_link: "https://docs.google.com/spreadsheets/d/1f8QcVAVhFWd_3IOg6F99k2jCbDF7SfGI/edit?usp=drive_link&ouid=102926084025601379909&rtpof=true&sd=true"
+    category: geo
+  - file_name: FILO2018_DISP_Pauvres_ZE2020.csv
+    gdrive_link: "https://drive.google.com/file/d/1PUJYPIve94LBweA9apC9C1nSDaVPG8Ua/view?usp=drive_link"
+    category: filo
+  - file_name: StockEtablissement_utf8.parquet
+    gdrive_link: "https://drive.google.com/file/d/1JRnldfyK29eblBTLDhfuQZi97qjjWgo-/view?usp=drive_link"
+    category: reco
+  - file_name: communes-france-2025.csv
+    gdrive_link: "https://drive.google.com/file/d/1ni7OE2umS9mtdvr1mznjXyMV47Ii8-DK/view?usp=drive_link"
+    category: geo
+  - file_name: epcicom2025-2.xlsx
+    gdrive_link: "https://docs.google.com/spreadsheets/d/1Ek5lgyL2khkGUXt6vE1xMOUND0PLKgsj/edit?usp=drive_link&ouid=102926084025601379909&rtpof=true&sd=true"
+    category: geo

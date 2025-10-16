@@ -1,0 +1,91 @@
+# This file defines the APIs and the source models to extract from these APIs
+
+APIs:
+
+  data.gouv.fr:
+    name: data.gouv.fr - Site web
+    description: Site de statistiques open data de l'Etat
+    base_url: https://www.data.gouv.fr/fr
+    apidoc: https://www.data.gouv.fr/fr
+  
+  INSEE.Metadonnees:
+    name: Metadonnees INSEE
+    description: INSEE - API des métadonnées
+    base_url: https://api.insee.fr/metadonnees/V1
+    apidoc: https://api.insee.fr/catalogue/site/themes/wso2/subthemes/insee/pages/item-info.jag?name=M%C3%A9tadonn%C3%A9es&version=V1&provider=insee
+    throttle: 30
+    default_headers:
+      accept: application/json
+  
+  GEO.api.gouv.fr:
+    name: GEO api.gouv.fr
+    description: API gouvernemental pour interreoger les référentiels géographiques
+    base_url: https://geo.api.gouv.fr
+    apidoc: https://geo.api.gouv.fr/
+    throttle: 120
+    default_headers:
+      accept: application/json
+
+    
+domains:
+
+  geographical_references:
+
+    regions:
+      API: INSEE.Metadonnees
+      description: Référentiel géographique INSEE - niveau régional
+      type: MelodiExtractor
+      endpoint: /geo/regions
+      format: json
+
+    departements:
+      API: INSEE.Metadonnees
+      description: Référentiel géographique INSEE - niveau départemental
+      type: MelodiExtractor
+      endpoint: /geo/departements
+      format: json
+
+    communes:
+      API: GEO.api.gouv.fr
+      description: Référentiel géographique GEO - niveau commune
+      type: JsonExtractor
+      endpoint: /communes?fields=code,nom,population,departement,region,centre
+      format: json
+
+    arrondissements:
+      API: GEO.api.gouv.fr
+      description: Référentiel géographique GEO - arrondissements
+      type: JsonExtractor
+      endpoint: /communes?type=arrondissement-municipal
+      format: json
+
+    epcis:
+      API: GEO.api.gouv.fr
+      description: Référentiel géographique GEO - niveau epcis
+      type: JsonExtractor
+      endpoint: /epcis
+      format: json
+    
+    intercommunalites:
+      API: data.gouv.fr
+      description:  base nationale sur les intercommunalités (BANATIC)
+      endpoint: /datasets/r/348cc004-22b4-4b12-9281-b00d4ccb1d88
+      type: FileExtractor
+      format: xlsx
+      preprocessor:
+        name: excelfile_dfload
+        type: notebook
+
+  logement_social:
+      
+      logements_sociaux:
+        API: devdurable.gouv.fr
+        description: Données nationales RPLS 2024 - régions, départements, EPCI et communes
+        type: FileExtractor
+        endpoint: /media/7970/download?inline
+        format: xlsx
+        preprocessor: 
+          name: logements_sociaux_rpls_dfload
+          type: notebook
+
+
